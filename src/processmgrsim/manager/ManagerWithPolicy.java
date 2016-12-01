@@ -13,24 +13,35 @@ import java.util.LinkedList;
  */
 public class ManagerWithPolicy extends Manager {
 
+    private final int SLEEPTIME = 100;
+
     public ManagerWithPolicy(int memorySize) {
         super(memorySize);
     }
 
-    public Process executeNext(PlannerPolicy policy) {
+    public Process executeNext(PlannerPolicy policy) throws InterruptedException {
         Process p = policy.getNext(getRunningProcesses());
         unload(p);
-        loadFromQueue();
+        loadFromQueue(policy);
         return p;
     }
 
     public LinkedList<Process> executeAll(PlannerPolicy policy) throws InterruptedException {
-        LinkedList<Process> execPlan = policy.getExecutionPlan(getRunningProcesses());
+        LinkedList<Process> execPlan = policy.getPlan(getRunningProcesses());
         for (Process p : execPlan) {
             unload(p);
-            Thread.sleep(10);
+            Thread.sleep(SLEEPTIME);
         }
-        loadFromQueue();
+        loadFromQueue(policy);
         return execPlan;
+    }
+
+    private void loadFromQueue(PlannerPolicy policy) throws InterruptedException {
+        Process nxt;
+        while (!processQueue.isEmpty() && fits(nxt = policy.getNext(processQueue))) {
+            load(nxt);
+            processQueue.remove(nxt);
+            Thread.sleep(SLEEPTIME);
+        }
     }
 }

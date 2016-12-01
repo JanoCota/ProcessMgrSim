@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class FifoPolicy implements PlannerPolicy {
 
     @Override
-    public LinkedList<Process> getExecutionPlan(LinkedList<Process> processTable) {
+    public LinkedList<Process> getPlan(LinkedList<Process> processTable) {
         LinkedList<Process> sorted = (LinkedList<Process>) processTable.clone();
         sorted.sort((p1, p2) -> Long.compare(p1.getTimeArrival(), p2.getTimeArrival()));
         return sorted;
@@ -22,7 +22,7 @@ public class FifoPolicy implements PlannerPolicy {
 
     @Override
     public Process getNext(LinkedList<Process> processTable) {
-        return getExecutionPlan(processTable).peekFirst();
+        return getPlan(processTable).peekFirst();
     }
 
     @Override

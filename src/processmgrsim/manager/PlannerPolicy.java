@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public interface PlannerPolicy {
 
-    public LinkedList<Process> getExecutionPlan(LinkedList<Process> processTable);
+    public LinkedList<Process> getPlan(LinkedList<Process> processTable);
 
     public Process getNext(LinkedList<Process> processTable);
 

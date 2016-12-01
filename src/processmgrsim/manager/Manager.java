@@ -15,8 +15,8 @@ public class Manager {
     private ProcessLogger log;
     private int availSize;
     private LinkedList<Address> freeAddrTable;
-    private LinkedList<Process> processQueue;
     private LinkedList<Process> processTable;
+    protected LinkedList<Process> processQueue;
 
     public Manager(int memorySize) {
         this.SIZE = memorySize;
@@ -78,7 +78,7 @@ public class Manager {
         loadFromQueue();
     }
 
-    private void load(Process p) {
+    protected void load(Process p) {
         int sizeRemainder = p.getSize();
         while (sizeRemainder > 0) {
             Address current = freeAddrTable.peekFirst();
@@ -113,13 +113,13 @@ public class Manager {
         p.setTimeUnloaded(currentRunTime());
     }
 
-    protected void loadFromQueue() {
+    private void loadFromQueue() {
         while (!processQueue.isEmpty() && fits(processQueue.peekFirst())) {
             load(processQueue.remove());
         }
     }
 
-    private boolean fits(Process p) {
+    protected boolean fits(Process p) {
         return p.getSize() <= availSize;
     }
 

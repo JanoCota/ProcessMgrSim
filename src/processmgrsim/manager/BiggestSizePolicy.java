@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class BiggestSizePolicy implements PlannerPolicy {
 
     @Override
-    public LinkedList<Process> getExecutionPlan(LinkedList<Process> processTable) {
+    public LinkedList<Process> getPlan(LinkedList<Process> processTable) {
         LinkedList<Process> sorted = (LinkedList<Process>) processTable.clone();
         sorted.sort((Process p1, Process p2) -> {
             if (p1.getSize() != p2.getSize()) {
@@ -28,7 +28,7 @@ public class BiggestSizePolicy implements PlannerPolicy {
 
     @Override
     public Process getNext(LinkedList<Process> processTable) {
-        return getExecutionPlan(processTable).peekFirst();
+        return getPlan(processTable).peekFirst();
     }
 
     @Override
