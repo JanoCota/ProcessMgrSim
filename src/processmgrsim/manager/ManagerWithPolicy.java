@@ -13,6 +13,7 @@ import java.util.LinkedList;
  */
 public class ManagerWithPolicy extends Manager {
 
+    //Makes it easier to notice which process was executed first
     private final int SLEEPTIME = 100;
 
     public ManagerWithPolicy(int memorySize) {

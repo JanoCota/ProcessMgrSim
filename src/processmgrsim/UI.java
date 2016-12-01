@@ -310,7 +310,10 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStartProcActionPerformed
     private void btnKillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKillActionPerformed
         try {
-            int pid = Integer.parseInt(cb1.getItemAt(cb1.getSelectedIndex()).split(" ")[0]);
+            int pid = Integer.parseInt(
+                    cb1.getItemAt(
+                            cb1.getSelectedIndex()).split(" ")[0]
+                            .substring(1, 1 + Integer.toString(PID).length()));
             p.kill(pid);
             g.paint(p);
             updateUI();
@@ -328,7 +331,8 @@ public class UI extends javax.swing.JFrame {
         try {
             p.executeAll(policy);
         } catch (InterruptedException ex) {
-            System.err.println("wew lad");
+            //Some handling
+            System.err.println("Threading error");
         }
         g.paint(p);
         updateUI();
@@ -346,8 +350,12 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnExecNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecNextActionPerformed
+        try{
         p.executeNext(policy);
-
+        }catch(InterruptedException ex){
+            //Some handling
+            System.err.println("Threading error");
+        }
         g.paint(p);
         updateUI();
         txtSize.requestFocus();
@@ -372,8 +380,8 @@ public class UI extends javax.swing.JFrame {
             cb1.setEnabled(true);
             btnKill.setEnabled(true);
             btnExecNext.setEnabled(true);
-            p.getRunningProcesses().forEach(pr -> 
-                    cb1.addItem(pr.toString())
+            p.getRunningProcesses().forEach(pr
+                    -> cb1.addItem(pr.toString())
             );
             if (p.getRunningProcesses().size() > 1) {
                 btnExecAll.setEnabled(true);
